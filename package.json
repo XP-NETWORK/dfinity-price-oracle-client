@@ -1,0 +1,74 @@
+{
+  "version": "0.1.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "npx eslint src",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why",
+    "deploy": "ts-node src/deploy.ts",
+    "document": "npx typedoc --out docs src"
+  },
+  "peerDependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx eslint src test"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "name": "@xp-oracle/dfinity",
+  "author": "imsk17",
+  "module": "dist/dfinity.esm.js",
+  "size-limit": [
+    {
+      "path": "dist/near.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/near.esm.js",
+      "limit": "10 KB"
+    }
+  ],
+  "devDependencies": {
+    "@noble/ed25519": "^1.7.1",
+    "@size-limit/preset-small-lib": "^8.1.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "dotenv": "^16.0.3",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard-with-typescript": "^24.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.0.0",
+    "husky": "^8.0.2",
+    "size-limit": "^8.1.0",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.4.1",
+    "typedoc": "^0.23.23",
+    "typescript": "*"
+  },
+  "dependencies": {
+    "@dfinity/agent": "^0.15.3",
+    "@dfinity/identity": "^0.15.4",
+    "@dfinity/identity-secp256k1": "^0.15.4",
+    "@dfinity/principal": "^0.15.3"
+  }
+}
