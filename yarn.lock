@@ -980,6 +980,13 @@
     simple-cbor "^0.4.1"
     ts-node "^10.8.2"
 
+"@dfinity/candid@^0.15.4":
+  version "0.15.4"
+  resolved "https://registry.yarnpkg.com/@dfinity/candid/-/candid-0.15.4.tgz#54d5e6d1b25f50b18e14021f2844777da89be638"
+  integrity sha512-ImoZ18i95DDstn+EXm/Y1ms7RqF1KVS7+KqZLNvpHFTlcOgfAQc5Bq8W6l1nfkOqeh7wcehDYdjFJwLxBoeTlw==
+  dependencies:
+    ts-node "^10.8.2"
+
 "@dfinity/identity-secp256k1@^0.15.4":
   version "0.15.4"
   resolved "https://registry.yarnpkg.com/@dfinity/identity-secp256k1/-/identity-secp256k1-0.15.4.tgz#f78141706d3bb089540a6efe454d782ee02df9b5"
