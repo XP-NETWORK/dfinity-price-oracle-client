@@ -1,6 +1,6 @@
 import { CurrencyData, UpdateGroupKey, UpdateData } from './types';
 import { Actor, HttpAgent } from '@dfinity/agent';
-import { BridgeAction, OracleIDL, _SERVICE } from './agent/idl';
+import { BridgeAction, ORACLE_IDL, _SERVICE } from './agent/idl';
 import { encode } from '@dfinity/agent/lib/cjs/cbor';
 import { Secp256k1KeyIdentity } from '@dfinity/identity-secp256k1';
 
@@ -166,7 +166,7 @@ export const CreateDfinityPayConvClient = async (
     host: conn,
     identity: wallet as any,
   });
-  const actor = Actor.createActor<_SERVICE>(OracleIDL, {
+  const actor = Actor.createActor<_SERVICE>(ORACLE_IDL, {
     canisterId,
     agent,
   });

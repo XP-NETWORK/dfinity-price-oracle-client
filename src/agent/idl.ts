@@ -1,6 +1,6 @@
 /* eslint-disable */
 //@ts-ignore
-export const idlFactory = ({ IDL }) => {
+export const ORACLE_IDL = ({ IDL }) => {
   const UpdatePrice = IDL.Record({
     new_data: IDL.Vec(IDL.Tuple(IDL.Nat16, IDL.Nat)),
   });
@@ -61,7 +61,7 @@ export const idlFactory = ({ IDL }) => {
   });
 };
 //@ts-ignore 
-export const OracleIDL = ({ IDL }) => {
+export const OracleInitIDL = ({ IDL }) => {
   return [IDL.Vec(IDL.Nat8)];
 };
 
