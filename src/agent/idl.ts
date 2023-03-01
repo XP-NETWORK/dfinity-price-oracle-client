@@ -10,7 +10,7 @@ export const ORACLE_IDL = ({ IDL }) => {
   });
   const UpdateGroupKey = IDL.Record({ gk: IDL.Vec(IDL.Nat8) });
   /* eslint-disable camelcase */
-  const BridgeAction_1 = IDL.Record({
+  const BridgeAction1 = IDL.Record({
     action_id: IDL.Nat,
     inner: UpdateGroupKey,
   });
@@ -47,7 +47,7 @@ export const ORACLE_IDL = ({ IDL }) => {
       []
     ),
     validate_update_group_key: IDL.Func(
-      [BridgeAction_1, IDL.Vec(IDL.Nat8)],
+      [BridgeAction1, IDL.Vec(IDL.Nat8)],
       [],
       []
     ),
@@ -60,38 +60,42 @@ export const ORACLE_IDL = ({ IDL }) => {
     validate_update_tx_fee: IDL.Func([BridgeAction, IDL.Vec(IDL.Nat8)], [], []),
   });
 };
-//@ts-ignore 
+//@ts-ignore
 export const OracleInitIDL = ({ IDL }) => {
   return [IDL.Vec(IDL.Nat8)];
 };
-
 
 import { ActorMethod } from '@dfinity/agent';
 
 export interface BridgeAction {
   action_id: bigint;
-  inner: UpdatePrice;
-}
-export interface BridgeAction_1 {
-  action_id: bigint;
   inner: UpdateGroupKey;
 }
+export interface BridgeAction1 {
+  action_id: bigint;
+  inner: UpdatePrice;
+}
 export interface UpdateGroupKey {
-  gk: number[];
+  gk: Uint8Array;
 }
 export interface UpdatePrice {
   new_data: Array<[number, bigint]>;
 }
 export interface _SERVICE {
+  encode_validate_group_key: ActorMethod<[BridgeAction], Uint8Array>;
+  encode_validate_update_data: ActorMethod<[BridgeAction1], Uint8Array>;
   estimate_gas: ActorMethod<[number, number], [] | [bigint]>;
   get_decimal_data: ActorMethod<[], Array<[number, bigint]>>;
-  get_group_key: ActorMethod<[], number[]>;
+  get_group_key: ActorMethod<[], Uint8Array>;
   get_other_fee_data: ActorMethod<[], Array<[number, bigint]>>;
   get_price_data: ActorMethod<[], Array<[number, bigint]>>;
   get_tx_fee_data: ActorMethod<[], Array<[number, bigint]>>;
-  validate_update_decimal: ActorMethod<[BridgeAction, number[]], undefined>;
-  validate_update_group_key: ActorMethod<[BridgeAction_1, number[]], undefined>;
-  validate_update_other_fee: ActorMethod<[BridgeAction, number[]], undefined>;
-  validate_update_price: ActorMethod<[BridgeAction, number[]], undefined>;
-  validate_update_tx_fee: ActorMethod<[BridgeAction, number[]], undefined>;
+  validate_update_decimal: ActorMethod<[BridgeAction1, Uint8Array], undefined>;
+  validate_update_group_key: ActorMethod<[BridgeAction, Uint8Array], undefined>;
+  validate_update_other_fee: ActorMethod<
+    [BridgeAction1, Uint8Array],
+    undefined
+  >;
+  validate_update_price: ActorMethod<[BridgeAction1, Uint8Array], undefined>;
+  validate_update_tx_fee: ActorMethod<[BridgeAction1, Uint8Array], undefined>;
 }

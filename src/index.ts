@@ -1,7 +1,6 @@
 import { CurrencyData, UpdateGroupKey, UpdateData } from './types';
 import { Actor, HttpAgent } from '@dfinity/agent';
-import { BridgeAction, ORACLE_IDL, _SERVICE } from './agent/idl';
-import { encode } from '@dfinity/agent/lib/cjs/cbor';
+import { ORACLE_IDL, _SERVICE } from './agent/idl';
 import { Secp256k1KeyIdentity } from '@dfinity/identity-secp256k1';
 
 export interface PayConvOracle {
@@ -204,16 +203,23 @@ export const CreateDfinityPayConvClient = async (
       );
       return Object.fromEntries(transformedResult);
     },
-    async encodeUpdateGroupKey() {
-      throw new Error(`Not yet implemented!`);
+    async encodeUpdateGroupKey(gk, act) {
+      return [
+        ...(await actor.encode_validate_group_key({
+          action_id: BigInt(act),
+          inner: {
+            gk: Buffer.from(gk),
+          },
+        })),
+      ];
     },
     async validateUpdateGroupKey(data, sigData) {
       await actor.validate_update_group_key(
         {
           action_id: BigInt(data.actionId),
-          inner: { gk: data.groupKey },
+          inner: { gk: Buffer.from(data.groupKey) },
         },
-        sigData
+        Buffer.from(sigData)
       );
       return `Result`;
     },
@@ -228,7 +234,7 @@ export const CreateDfinityPayConvClient = async (
           action_id: BigInt(data.actionId),
           inner: { new_data: mapped },
         },
-        sigData
+        Buffer.from(sigData)
       );
       return `Result`;
     },
@@ -243,13 +249,13 @@ export const CreateDfinityPayConvClient = async (
           action_id: BigInt(data.actionId),
           inner: { new_data: mapped },
         },
-        sigData
+        Buffer.from(sigData)
       );
       return `Result`;
     },
     async getGroupKey() {
       const result = await actor.get_group_key();
-      return result;
+      return [...result];
     },
     async getDecimalData() {
       throw new Error(`Not yet implemented!`);
@@ -263,14 +269,14 @@ export const CreateDfinityPayConvClient = async (
           return [Number(nonce), BigInt(value)];
         }
       );
-      const encodeIt: BridgeAction = {
-        action_id: BigInt(actionId),
-        inner: {
-          new_data: newData,
-        },
-      };
-      const encoded = encode(encodeIt);
-      return [...Buffer.from(encoded)];
+      return [
+        ...(await actor.encode_validate_update_data({
+          action_id: BigInt(actionId),
+          inner: {
+            new_data: newData,
+          },
+        })),
+      ];
     },
     async validateUpdateDecimals(data, sigData) {
       const entries = Object.entries(data.newData);
@@ -283,7 +289,7 @@ export const CreateDfinityPayConvClient = async (
           action_id: BigInt(data.actionId),
           inner: { new_data: mapped },
         },
-        sigData
+        Buffer.from(sigData)
       );
       return `Result`;
     },
@@ -298,7 +304,7 @@ export const CreateDfinityPayConvClient = async (
           action_id: BigInt(data.actionId),
           inner: { new_data: mapped },
         },
-        sigData
+        Buffer.from(sigData)
       );
       return `Result`;
     },
