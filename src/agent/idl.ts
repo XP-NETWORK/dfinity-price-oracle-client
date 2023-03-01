@@ -1,20 +1,29 @@
 /* eslint-disable */
 //@ts-ignore
 export const ORACLE_IDL = ({ IDL }) => {
-  const UpdatePrice = IDL.Record({
-    new_data: IDL.Vec(IDL.Tuple(IDL.Nat16, IDL.Nat)),
-  });
-  const BridgeAction = IDL.Record({
-    action_id: IDL.Nat,
-    inner: UpdatePrice,
-  });
   const UpdateGroupKey = IDL.Record({ gk: IDL.Vec(IDL.Nat8) });
-  /* eslint-disable camelcase */
-  const BridgeAction1 = IDL.Record({
+  const BridgeAction = IDL.Record({
     action_id: IDL.Nat,
     inner: UpdateGroupKey,
   });
+  const UpdatePrice = IDL.Record({
+    new_data: IDL.Vec(IDL.Tuple(IDL.Nat16, IDL.Nat)),
+  });
+  const BridgeAction_1 = IDL.Record({
+    action_id: IDL.Nat,
+    inner: UpdatePrice,
+  });
   return IDL.Service({
+    encode_validate_group_key: IDL.Func(
+      [BridgeAction],
+      [IDL.Vec(IDL.Nat8)],
+      ['query']
+    ),
+    encode_validate_update_data: IDL.Func(
+      [BridgeAction_1],
+      [IDL.Vec(IDL.Nat8)],
+      ['query']
+    ),
     estimate_gas: IDL.Func(
       [IDL.Nat16, IDL.Nat16],
       [IDL.Opt(IDL.Nat)],
@@ -42,26 +51,34 @@ export const ORACLE_IDL = ({ IDL }) => {
       ['query']
     ),
     validate_update_decimal: IDL.Func(
-      [BridgeAction, IDL.Vec(IDL.Nat8)],
+      [BridgeAction_1, IDL.Vec(IDL.Nat8)],
       [],
       []
     ),
     validate_update_group_key: IDL.Func(
-      [BridgeAction1, IDL.Vec(IDL.Nat8)],
-      [],
-      []
-    ),
-    validate_update_other_fee: IDL.Func(
       [BridgeAction, IDL.Vec(IDL.Nat8)],
       [],
       []
     ),
-    validate_update_price: IDL.Func([BridgeAction, IDL.Vec(IDL.Nat8)], [], []),
-    validate_update_tx_fee: IDL.Func([BridgeAction, IDL.Vec(IDL.Nat8)], [], []),
+    validate_update_other_fee: IDL.Func(
+      [BridgeAction_1, IDL.Vec(IDL.Nat8)],
+      [],
+      []
+    ),
+    validate_update_price: IDL.Func(
+      [BridgeAction_1, IDL.Vec(IDL.Nat8)],
+      [],
+      []
+    ),
+    validate_update_tx_fee: IDL.Func(
+      [BridgeAction_1, IDL.Vec(IDL.Nat8)],
+      [],
+      []
+    ),
   });
 };
 //@ts-ignore
-export const OracleInitIDL = ({ IDL }) => {
+export const ORACLE_IDL_INIT = ({ IDL }) => {
   return [IDL.Vec(IDL.Nat8)];
 };
 
